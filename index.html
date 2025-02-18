@@ -22,7 +22,38 @@
     <main>
         <h1 class="accentText">Index Page</h1>
         <p class="accentText">This is the first screen the user will see</p>
+        <div id="posts"></div>
     </main>
+
+    <script>
+        function loadPosts(posts) {
+            const postsContainer = document.getElementById("posts");
+            postsContainer.innerHTML = ""; // Clear previous posts
+
+            posts.forEach(post => {
+                const postElement = document.createElement("div");
+                postElement.innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p><strong>By:</strong> ${post.contributor_username} | <strong>Posted on:</strong> ${post.create_date}</p>
+                    <p>${post.body}</p>
+                    <hr>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        }
+
+        function getPosts() {
+            fetch("homepage.php")
+            .then(response => response.json())
+            .then(data => {
+                loadPosts(data);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Call the function when the page loads
+        window.onload = getPosts;
+    </script>
 
     <!-- Footer -->
     <footer class="footer">
