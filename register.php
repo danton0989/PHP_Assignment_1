@@ -1,6 +1,16 @@
 <?php
 $db = new SQLite3('users.db');
-$db->exec('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, first_name TEXT, last_name TEXT)');
+$db->exec("CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    username TEXT UNIQUE NOT NULL, 
+    password TEXT NOT NULL, 
+    first_name TEXT NOT NULL, 
+    last_name TEXT NOT NULL, 
+    registration_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, # CURRENT_TIMESTAMP stores UTC time (YYYY-MM-DD HH:MM:SS)
+    is_approved INTEGER NOT NULL DEFAULT 0, # 0 = not approved, 1 = approved
+    role TEXT CHECK(role IN ('Admin', 'Contributor')) NOT NULL DEFAULT 'Contributor'
+)");
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
