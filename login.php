@@ -12,8 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $result->fetchArray(SQLITE3_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $username;
+        $_SESSION['role'] = $user['role'];
+
         header('Location: welcome.php');
+        exit();
     } else {
         echo "Invalid username or password.";
     }
