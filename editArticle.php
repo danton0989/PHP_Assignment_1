@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
 
 if (!isset($_GET['article_id'])) {
     header('Location: welcome.php');
@@ -16,9 +17,9 @@ if (!isset($_GET['article_id'])) {
 
 $article_id = intval($_GET['article_id']);
 
-$stmt = $db->prepare("SELECT * FROM articles WHERE id = :id AND user_id = :user_id");
-$stmt->bindValue(':id', $article_id, SQLITE3_INTEGER);
-$stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+$stmt = $db->prepare("SELECT * FROM articles WHERE article_id = :article_id AND contributor_username = :contributor_username");
+$stmt->bindValue(':article_id', $article_id, SQLITE3_INTEGER);
+$stmt->bindValue(':contributor_username', $username, SQLITE3_TEXT);
 $result = $stmt->execute();
 $article = $result->fetchArray(SQLITE3_ASSOC);
 
@@ -31,11 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    $stmt = $db->prepare("UPDATE articles SET title = :title, content = :content WHERE id = :id AND user_id = :user_id");
+    $stmt = $db->prepare("UPDATE articles SET title = :title, body = :body WHERE article_id = :article_id AND contributor_username = :username");
     $stmt->bindValue(':title', $title, SQLITE3_TEXT);
-    $stmt->bindValue(':content', $content, SQLITE3_TEXT);
-    $stmt->bindValue(':id', $article_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':body', $content, SQLITE3_TEXT);
+    $stmt->bindValue(':article_id', $article_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':username', $username, SQLITE3_TEXT);
     $stmt->execute();
 
     header('Location: welcome.php');
@@ -61,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
             </div>
             <div class="mb-3">
                 <label class="form-label">Content:</label>
-                <textarea class="form-control" name="content" required><?php echo htmlspecialchars($article['content']); ?></textarea>
+                <textarea class="form-control" name="content" required><?php echo htmlspecialchars($article['body']); ?></textarea>
             </div>
             <button type="submit" name="update" class="btn btn-success">Update Article</button>
         </form>

@@ -21,9 +21,9 @@
         $SQL_insert_data = "
         INSERT INTO articles (title, body, create_date, start_date, end_date, contributor_username)
         VALUES
-            ('Post 1', '<p>This is the body of Post 1. It contains some HTML content.</p>', CURRENT_TIMESTAMP, '2025-02-17', '2025-03-01', 'tom@domain.com'),
-            ('Post 2', '<p>This is the body of Post 2. It contains some more HTML content.</p>', CURRENT_TIMESTAMP, '2025-02-17', '2025-03-02', 'ann@domain.com'),
-            ('Post 3', '<p>This is the body of Post 3. Here is some additional HTML content.</p>', CURRENT_TIMESTAMP, '2025-02-17', '2025-03-03', 'joe@domain.com')
+            ('Post 1', '<p>This is the body of Post 1. It contains some HTML content.</p>', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, DATETIME(CURRENT_TIMESTAMP, '+10 days'), 'tom@domain.com'),
+            ('Post 2', '<p>This is the body of Post 2. It contains some more HTML content.</p>', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, DATETIME(CURRENT_TIMESTAMP, '+10 days'), 'ann@domain.com'),
+            ('Post 3', '<p>This is the body of Post 3. Here is some additional HTML content.</p>', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, DATETIME(CURRENT_TIMESTAMP, '+10 days'), 'joe@domain.com')
         ";
         // Execute the insert query
         $db->exec($SQL_insert_data);
@@ -31,8 +31,8 @@
 
     $query = "SELECT title, body, create_date, start_date, end_date, contributor_username 
     FROM articles
-    WHERE (start_date IS NULL OR start_date <= DATE('now'))
-    AND (end_date IS NULL OR end_date >= DATE('now'))
+    WHERE (start_date IS NULL OR start_date <= DATETIME('now'))
+    AND (end_date IS NULL OR end_date >= DATETIME('now'))
     ORDER BY create_date DESC";
 
     $result = $db->query($query);
