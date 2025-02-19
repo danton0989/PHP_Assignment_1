@@ -6,17 +6,34 @@ $db->exec("CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL, 
     first_name TEXT NOT NULL, 
     last_name TEXT NOT NULL, 
-    registration_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, --CURRENT_TIMESTAMP stores UTC time (YYYY-MM-DD HH:MM:SS)
-    is_approved INTEGER NOT NULL DEFAULT 0, -- 0 = not approved, 1 = approved
+    registration_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_approved INTEGER NOT NULL DEFAULT 0,
     role TEXT CHECK(role IN ('Admin', 'Contributor')) NOT NULL DEFAULT 'Contributor'
 )");
 
+function is_valid_email($email) {
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+function is_valid_password($password) {
+    return preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\s]).{8,}$/', $password);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
+
+    if (!is_valid_email($username)) {
+        echo "Invalid email address.";
+        exit();
+    }
+
+    if (!is_valid_password($password)) {
+        echo "Password must be at least 8 characters long and contain at least one upper case letter, one lower case letter, one numeric character, and one special character.";
+        exit();
+    }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
