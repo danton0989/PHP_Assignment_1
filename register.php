@@ -25,18 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
 
+    // Validate email format
     if (!is_valid_email($username)) {
         echo "Invalid email address.";
         exit();
     }
 
+    // Validate password requirements
     if (!is_valid_password($password)) {
         echo "Password must be at least 8 characters long and contain at least one upper case letter, one lower case letter, one numeric character, and one special character.";
         exit();
     }
 
+    // This encrypts the password onto the databse using PASSWORD_DEFAULT, its a very secure hashing function commonly used in PHP.
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+    // Insert user data into the database
     $stmt = $db->prepare('INSERT INTO users (username, password, first_name, last_name, registration_date, is_approved, role) 
     VALUES (:username, :password, :first_name, :last_name, CURRENT_TIMESTAMP, 0, "Contributor")');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
@@ -45,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindValue(':last_name', $last_name, SQLITE3_TEXT);
     $stmt->execute();
 
+    // Redirect to login page
     header('Location: login.html');
 }
 ?>
