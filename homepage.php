@@ -29,11 +29,12 @@
         $db->exec($SQL_insert_data);
     }
 
-    $query = "SELECT title, body, create_date, start_date, end_date, contributor_username 
+    $query = "SELECT article_id, title, body, create_date, start_date, end_date, contributor_username 
     FROM articles
     WHERE (start_date IS NULL OR start_date <= DATETIME('now'))
     AND (end_date IS NULL OR end_date >= DATETIME('now'))
     ORDER BY create_date DESC";
+
 
     $result = $db->query($query);
 

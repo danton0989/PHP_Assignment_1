@@ -11,8 +11,7 @@
     <nav class="navbar">
         <div class="logo">Assignment #1</div>
         <ul class="nav-links">
-            <li><a href="post.html">Post</a></li>
-            <li><a href="profile.html">Profile</a></li>
+            <li><a href="welcome.php">Post</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a href="signout.php">Sign-Out</a></li>
         </ul>
@@ -21,26 +20,35 @@
     <!-- MAIN CONTENT -->
     <main>
         <h1 class="accentText">Index Page</h1>
-        <p class="accentText">This is the first screen the user will see</p>
+        <p class="accentText"></p>
         <div id="posts"></div>
     </main>
 
     <script>
         function loadPosts(posts) {
-            const postsContainer = document.getElementById("posts");
-            postsContainer.innerHTML = ""; // Clear previous posts
+    const postsContainer = document.getElementById("posts");
+    postsContainer.innerHTML = ""; // Clear previous posts
 
-            posts.forEach(post => {
-                const postElement = document.createElement("div");
-                postElement.innerHTML = `
-                    <h2>${post.title}</h2>
-                    <p><strong>By:</strong> ${post.contributor_username} | <strong>Posted on:</strong> ${post.create_date}</p>
-                    <p>${post.body}</p>
-                    <hr>
-                `;
-                postsContainer.appendChild(postElement);
-            });
+    posts.forEach(post => {
+        const postElement = document.createElement("div");
+        let content = post.body;
+
+        // If content is longer than 100 characters, truncate and add "Read More" button
+        if (content.length > 100) {
+            content = content.substring(0, 100) + "...";
+            content += `<br><a href="display.php?article_id=${post.article_id}" class="read-more">Read More</a>`;
         }
+
+        postElement.innerHTML = `
+            <h2>${post.title}</h2>
+            <p><strong>By:</strong> ${post.contributor_username} | <strong>Posted on:</strong> ${post.create_date}</p>
+            <p>${content}</p>
+            <hr>
+        `;
+        postsContainer.appendChild(postElement);
+    });
+}
+
 
         function getPosts() {
             fetch("homepage.php")

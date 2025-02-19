@@ -75,6 +75,8 @@ body {
 main {
     text-align: center;
     padding: 50px;
+    background: #F5EAD9; /* Light background for the content */
+    padding-bottom: 80px; /* Ensure space for the footer */
 }
 
 .form {
@@ -123,7 +125,88 @@ main {
     background: #008080;
     color: #F5EAD9;
     padding: 15px 0;
-    position: fixed;
+    position: relative; /* Adjust the position to avoid overlap */
     width: 100%;
     bottom: 0;
+}
+
+/* Waiting for approval styles */
+.waiting-for-approval {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #F5EAD9; /* Match background color */
+    text-align: center;
+    font-size: 2rem;
+    color: #fc5c5c; /* Accent color */
+    font-weight: bold;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.waiting-for-approval h2 {
+    font-size: 3rem;
+    color: #fc5c5c;
+    margin: 0;
+}
+
+/* Main Content Styles */
+main {
+    text-align: center;
+    padding: 50px;
+    background: #F5EAD9; /* Light background for the content */
+}
+
+#posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#posts div {
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 8px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    padding: 20px;
+    width: 80%; /* Adjust the width as needed */
+    max-width: 800px;
+}
+
+#posts h2 {
+    font-size: 24px;
+    color: #2C2F33; /* Dark text color */
+    margin-bottom: 10px;
+}
+
+#posts p {
+    font-size: 16px;
+    color: #2C2F33; /* Dark text color */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+#posts p strong {
+    color: #008080; /* Accent color for strong text */
+}
+
+hr {
+    border: 1px solid #F5EAD9;
+    width: 100%;
+    margin: 20px 0;
+}
+.read-more {
+    display: inline-block;
+    background-color: #fc5c5c;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.read-more:hover {
+    background-color: #f8a3a3;
 }
