@@ -80,14 +80,12 @@ $articles = $stmt->execute();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<nav class="navbar">
-    <div class="logo">Welcome</div>
-    <ul class="nav-links">
-        <li><a href="index.php">Home</a></li> <!-- Updated to link to index.php -->
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Logout</a></li>
-    </ul>
-</nav>
+    <nav class="navbar">
+        <div class="logo">Welcome</div>
+        <ul class="nav-links" id="nav-links">
+            
+        </ul>
+    </nav>
 
     
     <div class="container mt-5">
@@ -119,8 +117,28 @@ $articles = $stmt->execute();
             </div>
         <?php endwhile; ?>
     </div>
+    <!-- Footer -->
     <footer class="footer">
-        &copy; 2025 Your Website. All Rights Reserved.
+        <p>&copy; Alzen, Daniel, Joseph</p>
     </footer>
 </body>
+
+<script>
+    function getLoginStatus() {
+        fetch("loginStatus.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedIn) {
+                document.getElementById("nav-links").innerHTML = `<li><a href="/">Home</a></li>`;
+                if (data.isAdmin) {
+                    document.getElementById("nav-links").innerHTML += `<li><a href="admin.php">Admin</a></li>`;
+                }
+                document.getElementById("nav-links").innerHTML += `<li><a href="signout.php">Logout</a></li>`;
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    window.onload = getLoginStatus();
+</script>
 </html>

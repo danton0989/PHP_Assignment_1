@@ -36,8 +36,16 @@ $users = $db->query('SELECT id, username, role, is_approved FROM users');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-light">
+    <nav class="navbar">
+        <div class="logo">Welcome</div>
+        <ul class="nav-links" id="nav-links">
+            
+        </ul>
+    </nav>
+
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Admin Panel - User Management</h2>
 
@@ -94,5 +102,27 @@ $users = $db->query('SELECT id, username, role, is_approved FROM users');
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; Alzen, Daniel, Joseph</p>
+    </footer>
 </body>
+<script>
+    function getLoginStatus() {
+        fetch("loginStatus.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.loggedIn) {
+                document.getElementById("nav-links").innerHTML = `<li><a href="/">Home</a></li>`;
+                if (data.isApproved) {
+                    document.getElementById("nav-links").innerHTML += `<li><a href="welcome.php">Post</a></li>`;
+                }
+                document.getElementById("nav-links").innerHTML += `<li><a href="signout.php">Logout</a></li>`;
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    window.onload = getLoginStatus();
+</script>
 </html>
